@@ -1,17 +1,15 @@
 <template>
   <div id="app">
 		<div class="container">
-			<button type="button" class="btn btn-default">123123</button>
+			<button type="button" id="test-btn" class="btn btn-default">123123</button>
 		</div>
-    <img id="img" src="./assets/logo.png">
-    <router-view/>
   </div>
 </template>
 
 <script>
 export default {
 	mounted() {
-		$("#img").click(function(){
+		$("#test-btn").click(function(){
 			alert('1')
 		})
 	}
