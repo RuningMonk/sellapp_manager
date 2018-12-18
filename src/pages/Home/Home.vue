@@ -1,0 +1,175 @@
+<template>
+	<div id="Home">
+		<div class="top"></div>
+		<div class="info">
+			<ul class="linklist">
+				<li class="item store">
+					<div class="item_top">
+						<img class="item_icon" src="http://waimai.meituan.com/static/img/new2018/enter-icon.png" >
+						<div class="top_text">我要入驻</div>
+					</div>
+					<div class="item_bottom">商家、配送、城市代理、服务市场</div>
+				</li>
+				
+				<li class="item dev">
+					<div class="item_top">
+						<img class="item_icon" src="http://waimai.meituan.com/static/img/new2018/dev-icon.png" >
+						<div class="top_text">开发者接入</div>
+					</div>
+					<div class="item_bottom">外卖、餐饮开放平台</div>
+				</li>
+				<li class="item order">
+					<div class="item_top">
+						<img class="item_icon" src="http://waimai.meituan.com/static/img/new2018/waimai-icon.png" >
+						<div class="top_text">我要点外卖</div>
+					</div>
+					<div class="item_bottom">快捷下单、一键点餐</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</template>
+
+<script>
+	
+	export default{
+		
+	}
+	
+</script>
+
+<style scoped="scoped">
+	
+	#Home{
+		width: 100%;
+		padding-top: 70px;
+	}
+	
+	@media (min-width:768px){
+		.top{
+			margin-top: -70px;
+			width: 100vw;
+			height: 40vw;
+			/* height: 80vh; */
+			background-image: url('https://p1.meituan.net/1440.590/codeman/d2ab674fa0e4c875865e524d82fe15a34372569.png');
+			background-size: cover;
+			background-repeat: no-repeat;
+		}
+	}
+	
+	@media (min-width:0px) and (max-width:992px){
+		.top{
+			margin-top: -70px;
+			width: 100vw;
+			height: 150vw;
+			background-image: url('http://bpic.wotucdn.com/16/63/49/16634990-a1f8911fddd702436265fc6ba76dd784.jpg');
+			background-size: cover;
+			background-repeat: no-repeat;
+		}
+	}
+	
+	.info{
+		width: 100%;
+		height: 120vh;
+	}
+	
+	.linklist{
+		width: 999px;
+		height: 170px;
+		margin: auto;
+		margin-top: -70px;
+	}
+	
+	.store{
+		width: 33%;
+		height: 100%;
+		float: left;
+		background-color: #658FF7;
+		transition: all 0.3s;
+	}
+	
+	.store:hover{
+		margin-top: -5px;
+		height: 180px;
+		/* 阴影 */
+		-webkit-box-shadow: #658FF7 0px 0px 10px;		/* 针对chrome */
+		-moz-box-shadow: #658FF7 0px 0px 10px;			/* 针对firefox*/
+		box-shadow: #658FF7 0px 0px 10px;				/* 普通浏览器*/
+	}
+	
+	.dev{
+		width: 34%;
+		height: 100%;
+		float: left;
+		background-color: #F54C45;
+		transition: all 0.3s;
+	}
+	
+	.dev:hover{
+		margin-top: -5px;
+		height: 180px;
+		/* 阴影 */
+		-webkit-box-shadow: #F54C45 0px 0px 10px;		/* 针对chrome */
+		-moz-box-shadow: #F54C45 0px 0px 10px;			/* 针对firefox*/
+		box-shadow: #F54C45 0px 0px 10px;				/* 普通浏览器*/
+	}
+	
+	.order{
+		width: 33%;
+		height: 100%;
+		float: left;
+		background-color: #FFBD27;
+		transition: all 0.3s;
+	}
+	
+	.order:hover{
+		margin-top: -5px;
+		height: 180px;
+		/* 阴影 */
+		-webkit-box-shadow: #FFBD27 0px 0px 10px;		/* 针对chrome */
+		-moz-box-shadow: #FFBD27 0px 0px 10px;			/* 针对firefox*/
+		box-shadow: #FFBD27 0px 0px 10px;				/* 普通浏览器*/
+	}
+	
+	.item{
+		cursor: pointer;
+	}
+	
+	.item_top{
+		width: 100%;
+		height: 40px;
+		margin-top: 50px;
+		position: relative;
+	}
+	
+	.item_icon{
+		width: 30px;
+		height: 30px;
+		margin-left: 95px;
+		margin-top: 6px;
+		float: left;
+	}
+	
+	.top_text{
+		color: #fff;
+		font-size: 26px;
+		font-family: PingFangSC-Semibold,Microsoft Yahei,Arial,Helvetica,sans-serif;
+		text-align: center;
+		font-weight: 400;
+		margin-left: 10px;
+		padding-right: 20px;
+		float: left;
+		background: url(../../../static/img/icon/right-arrow.png) no-repeat right;
+		background-size: 10px 14px;
+	}
+	
+	.item_bottom{
+		width: 100%;
+		margin-top: 10px;
+		font-size: 16px;
+		color: rgba(255,255,255,0.80);
+		text-align: center;
+		line-height: 16px;
+	}
+	
+</style>
