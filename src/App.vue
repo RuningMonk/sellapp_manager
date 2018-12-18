@@ -2,6 +2,7 @@
 	<div id="app">
 		<div class="container">
 			<button type="button" id="test-btn" class="btn btn-default">123123</button>
+			<img v-lazy="this.testimg" id="test-img">
 		</div>
 	</div>
 </template>
@@ -17,7 +18,8 @@
 		},
 		computed:{
 			...mapState([
-				'testinfo'
+				'testinfo',
+				'testimg'
 			])
 		},
 		mounted() {
@@ -38,5 +40,11 @@
 		text-align: center;
 		color: #2c3e50;
 		margin-top: 60px;
+	}
+	
+	#test-img{
+		width: 100px;
+		height: 100px;
+		display: block;
 	}
 </style>
