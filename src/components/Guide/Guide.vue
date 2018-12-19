@@ -54,6 +54,10 @@
 		height: 70px;
 		position: fixed;
 		z-index: 100;
+		
+		-webkit-box-shadow: #8E8E8E 0px 0px 10px;		/* 针对chrome */
+		-moz-box-shadow: #8E8E8E 0px 0px 10px;			/* 针对firefox*/
+		box-shadow: #8E8E8E 0px 0px 10px;
 	}
 	
 	.navbar-brand{

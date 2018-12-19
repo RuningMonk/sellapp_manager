@@ -11,12 +11,12 @@
 					<div class="item_bottom">商家、配送、城市代理、服务市场</div>
 				</li>
 				
-				<li class="item dev">
+				<li class="item manager">
 					<div class="item_top">
 						<img class="item_icon" src="http://waimai.meituan.com/static/img/new2018/dev-icon.png" >
-						<div class="top_text">开发者接入</div>
+						<div class="top_text">管理者平台</div>
 					</div>
-					<div class="item_bottom">外卖、餐饮开放平台</div>
+					<div class="item_bottom">外卖、餐饮数据管理平台</div>
 				</li>
 				<li class="item order">
 					<div class="item_top">
@@ -26,14 +26,29 @@
 					<div class="item_bottom">快捷下单、一键点餐</div>
 				</li>
 			</ul>
+			<div class="info_parts">
+				<HomePart1 class="info_part"></HomePart1>
+				<HomePart2 class="info_part"></HomePart2>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+	import HomePart1 from '../../components/Home_part1/Home_part1.vue'
+	import HomePart2 from '../../components/Home_part2/Home_part2.vue'
 	
 	export default{
-		
+		components:{
+			HomePart1,
+			HomePart2
+		},
+		computed:{
+			
+		},
+		methods: {
+			
+		}
 	}
 	
 </script>
@@ -48,9 +63,8 @@
 	@media (min-width:768px){
 		.top{
 			margin-top: -70px;
-			width: 100vw;
+			width: 98.9vw;
 			height: 40vw;
-			/* height: 80vh; */
 			background-image: url('https://p1.meituan.net/1440.590/codeman/d2ab674fa0e4c875865e524d82fe15a34372569.png');
 			background-size: cover;
 			background-repeat: no-repeat;
@@ -60,7 +74,7 @@
 	@media (min-width:0px) and (max-width:992px){
 		.top{
 			margin-top: -70px;
-			width: 100vw;
+			width: 98.9vw;
 			height: 150vw;
 			background-image: url('http://bpic.wotucdn.com/16/63/49/16634990-a1f8911fddd702436265fc6ba76dd784.jpg');
 			background-size: cover;
@@ -70,14 +84,15 @@
 	
 	.info{
 		width: 100%;
-		height: 120vh;
+		height: 230vh;
+		padding-top: 170px;
 	}
 	
 	.linklist{
 		width: 999px;
 		height: 170px;
 		margin: auto;
-		margin-top: -70px;
+		margin-top: -230px;
 	}
 	
 	.store{
@@ -97,7 +112,7 @@
 		box-shadow: #658FF7 0px 0px 10px;				/* 普通浏览器*/
 	}
 	
-	.dev{
+	.manager{
 		width: 34%;
 		height: 100%;
 		float: left;
@@ -105,7 +120,7 @@
 		transition: all 0.3s;
 	}
 	
-	.dev:hover{
+	.manager:hover{
 		margin-top: -5px;
 		height: 180px;
 		/* 阴影 */
@@ -145,7 +160,7 @@
 	.item_icon{
 		width: 30px;
 		height: 30px;
-		margin-left: 95px;
+		margin-left: 80px;
 		margin-top: 6px;
 		float: left;
 	}
@@ -171,5 +186,18 @@
 		text-align: center;
 		line-height: 16px;
 	}
+	
+	.info_parts{
+		width: 100%;
+		height: 100%;
+	}
+	
+	.info_part{
+		width: 100%;
+		height: 100vh;
+		position: relative;
+	}
+	
+	
 	
 </style>
