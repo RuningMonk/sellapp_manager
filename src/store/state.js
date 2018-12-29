@@ -3,7 +3,11 @@
 */
 
 export default {
-	bannerInfo:[
+	FoldState:true,			//Manager界面的折叠效果管理
+	shop_id:2,				//测试用的shop_id
+	DMInfo:{},				//店铺商品信息
+	StoreInfo:{},			//店铺信息
+	BannerInfo:[
 		{
 			tag:'XX服务市场',
 			title:'米粉面馆接入经营助手服务，收入增幅达51.52%',
@@ -21,6 +25,59 @@ export default {
 			title:'平凡之路上的英雄梦',
 			content:'我觉得自从成了美团众包骑手之后，遇到了很多有趣新奇的人和事。以前我的生活比较单调，上班、回家两点一线。加入美团众包后，认识了许多朋友，帮助了一些人也得到了一些人的帮助。美团众包，为我的生活打开了一扇新的大门。我喜欢它的弹性、自由，让我对生活有了更多的掌控......',
 			src:'http://waimai.meituan.com/static/img/new2018/static/story3.jpg'
+		}
+	],
+	EnterInfo:[
+		[
+			{
+				src:'http://s1.meituan.net/bs/?f=wm/inode_lfs:dist/img/csr/join-b-00a69ad1bf.png',
+				title:'外卖商家入驻',
+				descript:'平台优势，成交量有保证'
+			},
+			{
+				src:'http://s1.meituan.net/bs/?f=wm/inode_lfs:dist/img/csr/join-s-8085075ad8.png',
+				title:'零售商家入驻',
+				descript:'超市便利店、生鲜蔬菜、药品鲜花招商'
+			}
+		],
+		[
+			{
+				src:'http://s1.meituan.net/bs/?f=wm/inode_lfs:dist/img/csr/join-deliver-b167fdce0b.png',
+				title:'美团配送',
+				descript:'做美团骑手，当配送加盟商。加入全球最大的实时配送网络，高收入高回报'
+			},
+			{
+				src:'http://s1.meituan.net/bs/?f=wm/inode_lfs:dist/img/csr/join-city-cd25a55a3b.png',
+				title:'城市代理',
+				descript:'开放外卖商家合作洽谈、订单配送等业务。帮助商家入驻美团外卖，三方合作，共享红利'
+			}
+		],
+		[
+			{
+				src:'http://s1.meituan.net/bs/?f=wm/inode_lfs:dist/img/csr/join-service-53b6ea859a.png',
+				title:'美团服务市场',
+				descript:'为百万商家提供全品类优质服务，让生意更简单'
+			}
+		]
+	],
+	OpenInfo:[
+		{
+			src:'http://s1.meituan.net/bs/?f=wm/inode_lfs:dist/img/csr/openplatform-c-070c8da7fd.png',
+			title:'XX外卖C端开放平台',
+			descript:'将XX外卖的服务能力全方位输出给合作伙伴，实现流量转化，业态升级',
+			btnText:'提供定制化的API和H5'
+		},
+		{
+			src:'http://s1.meituan.net/bs/?f=wm/inode_lfs:dist/img/csr/openplatform-b-6f5f17ca06.png',
+			title:'XX外卖商家端开放平台',
+			descript:'帮助连锁品牌商家为顾客提供优质的服务',
+			btnText:'自动接入，门店、订单、商品接口一应俱全'
+		},
+		{
+			src:'http://s1.meituan.net/bs/?f=wm/inode_lfs:dist/img/csr/openplatform-erp-0fef9cf462.png',
+			title:'聚宝盆————XX点评餐饮ERP开放平台',
+			descript:'致力于与餐饮ERP厂商共建高效生态系统，推动餐饮业效率提升',
+			btnText:'提供团购、外卖、闪惠接口'
 		}
 	]
 }

@@ -7,7 +7,7 @@
 			<div class="bg" :class="{'slide-show':scrolly>=1300}"></div>
 			<div id="banner" class="banner" :class="{'slide-show':scrolly>=1300}">
 				<ul id="banner-list">
-					<li class="banner-item" v-for="item in bannerInfo" :key="item.ID">
+					<li class="banner-item" v-for="item in BannerInfo" :key="item.ID">
 						<div class="item-left">
 							<div class="tag">{{item.tag}}</div>
 							<div class="title">{{item.title}}</div>
@@ -22,7 +22,7 @@
 			</div>
 			<div class="tab-index">
 				<ul class="tabs">
-					<li v-for="(item,index) in bannerInfo" :key="index" class="tab" :class="{active:bannerIndex==index}" @click="setindex(index)"></li>
+					<li v-for="(item,index) in BannerInfo" :key="index" class="tab" :class="{active:bannerIndex==index}" @click="setindex(index)"></li>
 				</ul>
 			</div>
 		</div>
@@ -41,7 +41,7 @@
 		},
 		computed: {
 			...mapState([
-				'bannerInfo'
+				'BannerInfo'
 			]),
 			imgSrc() {
 				switch (this.bannerIndex) {

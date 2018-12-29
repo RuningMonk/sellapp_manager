@@ -10,16 +10,13 @@
 			<div class="head-content collapse navbar-collapse" id="navbarContent">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item" @click="setindex(0)" :class="{'active':nav_index==0}">
-						<a class="nav-link" href="#">首页 <span class="sr-only">(current)</span></a>
+						<router-link class="nav-link" to="/home">首页</router-link>
 					</li>
 					<li class="nav-item" @click="setindex(1)" :class="{'active':nav_index==1}">
-						<a class="nav-link" href="#">入驻加盟</a>
+						<router-link class="nav-link" to="/enter">入驻加盟</router-link>
 					</li>
 					<li class="nav-item" @click="setindex(2)" :class="{'active':nav_index==2}">
-						<a class="nav-link" href="#">开放平台</a>
-					</li>
-					<li class="nav-item" @click="setindex(3)" :class="{'active':nav_index==3}">
-						<a class="nav-link" href="#">社会责任</a>
+						<router-link class="nav-link" to="/open">开放平台</router-link>
 					</li>
 					<li class="nav-item" @click="setindex(4)" :class="{'active':nav_index==4}">
 						<a class="nav-link" href="#">点外卖</a>

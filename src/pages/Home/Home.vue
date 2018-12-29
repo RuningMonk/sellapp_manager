@@ -1,16 +1,19 @@
 <template>
 	<div id="Home">
-		<div class="top"></div>
+		<div class="top">
+			<div id="black1"></div>
+			<div id="black2"></div>
+			<div id="black3"></div>
+		</div>
 		<div class="info">
 			<ul class="linklist">
-				<li class="item store">
+				<router-link tag="li" to="/seller" class="item store">
 					<div class="item_top">
 						<img class="item_icon" src="http://waimai.meituan.com/static/img/new2018/enter-icon.png" >
 						<div class="top_text">我要入驻</div>
 					</div>
 					<div class="item_bottom">商家、配送、城市代理、服务市场</div>
-				</li>
-				
+				</router-link>
 				<li class="item manager">
 					<div class="item_top">
 						<img class="item_icon" src="http://waimai.meituan.com/static/img/new2018/dev-icon.png" >
@@ -31,17 +34,20 @@
 				<HomePart2 class="info_part"></HomePart2>
 			</div>
 		</div>
+		<PageBottom></PageBottom>
 	</div>
 </template>
 
 <script>
 	import HomePart1 from '../../components/Home_part1/Home_part1.vue'
 	import HomePart2 from '../../components/Home_part2/Home_part2.vue'
+	import PageBottom from '../../components/Page_bottom/Page_bottom.vue'
 	
 	export default{
 		components:{
 			HomePart1,
-			HomePart2
+			HomePart2,
+			PageBottom
 		},
 		computed:{
 			
@@ -55,6 +61,43 @@
 
 <style scoped="scoped">
 	
+	.top{
+		position: relative;
+	}
+	
+	.item{
+		position: relative;
+	}
+	
+	#black1{
+		position: absolute;
+		width: 7%;
+		height: 15px;
+		top: 30.5%;
+		left: 65%;
+		background-color: #000000;
+		transform: rotateZ(15deg);
+	}
+	
+	#black2{
+		position: absolute;
+		width: 2%;
+		height: 6px;
+		top: 64.5%;
+		left: 13.2%;
+		background-color: #000000;
+		transform: rotateZ(15deg);
+	}
+	
+	#black3{
+		position: absolute;
+		width: 2%;
+		height: 6px;
+		top: 69.5%;
+		left: 15.5%;
+		background-color: #000000;
+	}
+	
 	#Home{
 		width: 100%;
 		padding-top: 70px;
@@ -63,7 +106,7 @@
 	@media (min-width:768px){
 		.top{
 			margin-top: -70px;
-			width: 98.9vw;
+			width: 100vw;
 			height: 40vw;
 			background-image: url('https://p1.meituan.net/1440.590/codeman/d2ab674fa0e4c875865e524d82fe15a34372569.png');
 			background-size: cover;
@@ -74,7 +117,7 @@
 	@media (min-width:0px) and (max-width:992px){
 		.top{
 			margin-top: -70px;
-			width: 98.9vw;
+			width: 99vw;
 			height: 150vw;
 			background-image: url('http://bpic.wotucdn.com/16/63/49/16634990-a1f8911fddd702436265fc6ba76dd784.jpg');
 			background-size: cover;
@@ -84,7 +127,7 @@
 	
 	.info{
 		width: 100%;
-		height: 230vh;
+		height: 210vh;
 		padding-top: 170px;
 	}
 	
@@ -189,7 +232,7 @@
 	
 	.info_parts{
 		width: 100%;
-		height: 100%;
+		height: auto;
 	}
 	
 	.info_part{
@@ -197,7 +240,6 @@
 		height: 100vh;
 		position: relative;
 	}
-	
 	
 	
 </style>

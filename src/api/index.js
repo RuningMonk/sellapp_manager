@@ -8,6 +8,11 @@ import ajax from './ajax.js'
 const BASE_URL = '/api'
 // const BASE_URL = 'http://100.89.230.234:2400'
 
+//1.根据账户获取商铺商品信息
+export const reqDMInfo = ({shop_id}) => ajax(BASE_URL+'/shop_goods',{shop_id})
+//2.根据账户获取商铺信息
+export const reqStoreInfo = ({shop_id}) => ajax(BASE_URL+'/shop_info',{shop_id},'POST')
+
 //1.根据经纬度获取位置
 export const reqBanners = () => ajax(BASE_URL+'/banners')
 //2.设置当前店铺位置的session
@@ -26,8 +31,6 @@ export const reqLogin = ({name,pwd,captcha}) => ajax(BASE_URL+'/login',{name,pwd
 export const reqLoginState = () => ajax(BASE_URL+'/login_state',{},'POST')
 //9.用户登出
 export const reqQuitLogin = () => ajax(BASE_URL+'/quit_login')
-//10.获取当前店铺的商品列表
-export const reqGoodsList = ({shop_id}) => ajax(BASE_URL+'/shop_goods',{shop_id})
 //11.获取当前店铺的评价列表
 export const reqCommentsList = ({shop_id}) => ajax(BASE_URL+'/shop_comments',{shop_id})
 //12.店铺的搜索
