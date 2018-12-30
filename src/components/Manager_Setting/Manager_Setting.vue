@@ -32,7 +32,7 @@
 								<div class="box-title" style="top: 5%">店铺优惠</div>
 								<ul class="tags-ul">
 									<li class="tags-li" v-for="(item,index) in 5" :key="item.ID" :class="{hide: AddTagsCount < index}">
-										<input type="text" class="tags-input box-text">{{index}}
+										<input type="text" class="tags-input box-text">
 										<div class="li-add" style="left: 85%" @click="TagAdd()" v-if="index==0"></div>
 										<div class="li-del" style="left: 85%" @click="TagDel()" v-if="AddTagsCount==index&&index!=0"></div>
 									</li>
@@ -62,14 +62,50 @@
 					</div>
 				</div>
 				<div class="body-right">
-					<div class="img body-part">
-						<div class="relative-box"></div>
+					<div class="img body-part" :class="{'img-plus': ImgBoxPlus}">
+						<div class="relative-box">
+							<div class="category" :class="{'plus': ImgBoxPlus}">
+								<div class="box-title must" style="left: 10%;top: 5%">分类设置</div>
+								<ul class="category-ul" :class="{'category-ul-type1': !ImgBoxPlus,'category-ul-type2': ImgBoxPlus}">
+									<li class="category-li" v-for="(item,index) in 10" :key="item.ID" :class="{hide: AddCateCount < index}">
+										<div class="li-index">{{index+1}}.</div>
+										<input type="text" class="category-input box-text">
+										<div class="li-add" style="left: 85%" @click="CategoryAdd()" v-if="index==0"></div>
+										<div class="li-del" style="left: 85%" @click="CategoryDel()" v-if="AddCateCount==index&&index!=0"></div>
+									</li>
+								</ul>
+							</div>
+							<div class="url" :class="{'pre-minus': CategoryPre,'minus': ImgBoxPlus&&!CategoryPre}">
+								<div class="box-title" style="left: 10%;top: 5%">图片上传</div>
+								<input type="text" class="url-src box-text" v-model="src" placeholder="...">
+								<input type="button" class="url-sub btn btn-dark btn-sm" value="预览" @click="SubSrc()">
+							</div>
+						</div>
 					</div>
-					<div class="price_announce body-part">
-						<div class="relative-box"></div>
+					<div class="price_announce body-part" :class="{'price-minus': ImgBoxPlus}">
+						<div class="relative-box">
+							<div class="price">
+								<div class="min">
+								<div class="box-title must">配送服务最低价格</div>
+									<input type="number" class="price-input box-text" v-model="min_price" @click="number_click(min_price,0)" @blur="number_blur(min_price,0)">
+									<span class="unit">¥</span>
+								</div>
+								<div class="fee">
+								<div class="box-title must">配送费</div>
+									<input type="number" class="price-input box-text" v-model="fee" @click="number_click(fee,1)" @blur="number_blur(fee,1)">
+									<span class="unit">¥</span>
+								</div>
+							</div>
+							<div class="announce">
+								<div class="box-title" style="left: 15%;top: 10%">店铺公告</div>
+								<textarea v-model="announce" cols="30" rows="2" class="announce-content" maxlength="40" placeholder="..."></textarea>
+							</div>
+						</div>
 					</div>
 					<div class="sub body-part">
-						<div class="relative-box"></div>
+						<div class="relative-box">
+							<input type="button" class="config-btn btn btn-danger btn-sm" value="保存">
+						</div>
 					</div>
 				</div>
 			</div>
@@ -85,12 +121,18 @@
 			return {
 				OnlyLi: true,
 				AddTagsCount: 0,
-				dropdownShow:false,
+				AddCateCount: 0,
+				dropdownShow: false,
+				ImgBoxPlus: false,
 				
 				name: '',
 				time: '',
 				position: '',
-				classify: ''
+				classify: '',
+				src: '',
+				announce: '',
+				min_price: '',
+				fee: ''
 				
 			}
 		},
@@ -103,6 +145,13 @@
 					return this.ClassifyList[0]
 				}else{
 					return ''
+				}
+			},
+			CategoryPre(){
+				if(3<this.AddCateCount && this.AddCateCount< 7){
+					return true
+				}else{
+					return false
 				}
 			}
 		},
@@ -120,8 +169,57 @@
 			listClick(value) {
 				this.classify = value;
 				this.dropdownShow = false
+			},
+			CategoryAdd(){
+				if(this.AddCateCount < 9){
+					this.AddCateCount++;
+				}
+			},
+			CategoryDel(){
+				if(this.AddCateCount > 0){
+					this.AddCateCount--;
+				}
+			},
+			SubSrc(){
+				console.log(this.src)
+			},
+			number_click(value,flag){
+				if(flag==0){
+					if(value!=''){
+						this.min_price = parseFloat(value)
+					}
+				}else{
+					if(value!=''){
+						this.fee = parseFloat(value)
+					}
+				}
+				
+			},
+			number_blur(value,flag){
+				if(flag==0){
+					if(value!=''){
+						this.min_price = parseFloat(value).toFixed(2)
+					}
+				}else{
+					if(value!=''){
+						this.fee = parseFloat(value).toFixed(2)
+					}
+				}
 			}
 		},
+		async mounted(){
+			const that = this;
+			
+		},
+		watch: {
+			AddCateCount(value){
+				if(value > 3){
+					this.ImgBoxPlus = true
+				}else{
+					this.ImgBoxPlus = false
+				}
+			}
+		}
 	}
 	
 </script>
@@ -154,6 +252,7 @@
 		display: flex;
 		padding: 10px 10px;
 		flex-direction: column;
+		transition: height 0.5s;
 	}
 	
 	.input_list{
@@ -170,6 +269,14 @@
 	
 	.price_announce{
 		height: 40%;
+	}
+	
+	.img-plus{
+		height: 55%;
+	}
+	
+	.price-minus{
+		height: 25%;
 	}
 	
 	.sub{
@@ -362,12 +469,6 @@
 		z-index: 1;
 	}
 	
-	.hide{
-		opacity: 0;
-		margin-top: -40px;
-		z-index: -1;
-	}
-	
 	.tags-input{
 		width: 60%;
 		height: 30px !important;
@@ -514,11 +615,203 @@
 		background-color: #E8E8E8;
 	}
 	
+	.category{
+		width: 100%;
+		height: 70%;
+		position: relative;
+		transition: all 0.5s;
+		
+	}
+	
+	.category-ul{
+		height: auto;
+		transition: all 0.5s;
+		margin-bottom: 0;
+		position: absolute;
+		transform: translateX(-50%);
+	}
+	
+	.category-ul-type1{
+		width: 100%;
+		top: 22%;
+		left: 50%;
+	}
+	
+	.category-ul-type2{
+		width: 100%;
+		top: 12%;
+		left: 50%;
+	}
+	
+	.category-li{
+		width: 100%;
+		height: 40px;
+		padding: 5px;
+		float: left;
+		position: relative;
+		transition: all 0.5s;
+		opacity: 1;
+		z-index: 1;
+	}
+	
+	.li-index{
+		font-size: 12px;
+		position: absolute;
+		left: 18%;
+		top: 50%;
+		transform: translate(-50%,-50%);
+	}
+	
+	.category-input{
+		width: 60%;
+		height: 30px !important;
+		font-size: 12px;
+		left: 50%;
+		top: 50%;
+	}
+	
+	.url{
+		width: 100%;
+		height: 30%;
+		position: relative;
+		transition: all 0.5s;
+		opacity: 1;
+		z-index: 1;
+		
+	}
+	
+	.url-src{
+		width: 60%;
+		left: 40%;
+		top: 60%;
+		padding-right: 20px;
+		/* 超出部分用省略号代替 */
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	
+	.url-sub{
+		width: 100px;
+		left: 75%;
+		top: 60%;
+		position: absolute;
+		transform: translateY(-50%);
+	}
+	
+	.plus{
+		height: 100%;
+	}
+	
+	.pre-minus{
+		margin-top: -130px;
+	}
+	
+	.minus{
+		height: 0%;
+		opacity: 0;
+		z-index: -1;
+	}
+	
+	.price{
+		width: 100%;
+		height: 40%;
+		position: relative;
+		animation: all 0.5s;
+	}
+	
+	.min,.fee{
+		width: 50%;
+		height: 100%;
+		float: left;
+		position: relative;
+	}
+	
+	.min .box-title,.fee .box-title{
+		left: 25%;
+		top: 25%;
+	}
+	
+	.price-input{
+		width: 50%;
+		height: 30px;
+		top: 60%;
+		left: 50%;
+	}
+	
+	.unit{
+		height: 30px;
+		position: absolute;
+		line-height: 30px;
+		left: 72%;
+		top: 60%;
+		transform: translate(-50%,-50%);
+		font-size: 16px;
+		font-family: Roboto, sans-serif;
+		cursor: default
+	}
+	
+	.announce{
+		width: 100%;
+		height: 60%;
+		animation: all 0.5s;
+		position: relative;
+	}
+	
+	.announce-content{
+		width: 70%;
+		height: 120px;
+		position: absolute;
+		left: 50%;
+		top: 55%;
+		transform: translate(-50%,-50%);
+		padding: 7px 20px;
+		border: solid 1px #D8D8D8;
+		font-size: 14px;
+		outline-color: #3DC6B6;
+		resize: none;
+	}
+	
+	.config-btn{
+		width: 120px;
+		height: 40px;
+		position: absolute;
+		top: 60%;
+		left: 80%;
+		transform: translate(-50%,-50%);
+	}
+	
+	
 	/*去除input的各种自带的调整按钮(太丑了)*/
 	input::-webkit-outer-spin-button,
 	input::-webkit-inner-spin-button,
 	input::-webkit-clear-button {
 		display: none;
 	}
+	
+	/*列表的隐藏*/
+	.hide{
+		opacity: 0;
+		margin-top: -40px;
+		z-index: -1;
+	}
+	
+	.price-minus .box-title{
+		top: 15%;
+	}
+	
+	.price-minus .price-input{
+		top: 70%;
+	}
+	
+	.price-minus .unit{
+		top: 70%;
+	}
+	
+	.price-minus .announce-content{
+		height: 60px;
+		top: 60%;
+	}
+	
 	
 </style>
