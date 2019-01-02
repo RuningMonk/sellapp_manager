@@ -5,6 +5,7 @@
 import {
 	RECEIVE_TEST,
 	RECEIVE_FOLD_STATE,
+	RECEIVE_EDIT_STATE,
 	RECEIVE_DM,
 	RECEIVE_STORE
 	
@@ -24,5 +25,8 @@ export default {
 	},
 	[RECEIVE_STORE](state, {StoreInfo}) {
 		state.StoreInfo = StoreInfo
+	},
+	[RECEIVE_EDIT_STATE](state, {EditState}) {
+		state.EditState = EditState
 	}
 }

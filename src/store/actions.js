@@ -6,7 +6,8 @@ import {
 	RECEIVE_TEST,
 	RECEIVE_FOLD_STATE,
 	RECEIVE_DM,
-	RECEIVE_STORE
+	RECEIVE_STORE,
+	RECEIVE_EDIT_STATE
 	
 } from './mutation-types'
 
@@ -34,12 +35,16 @@ export default{
 		const result = await reqStoreInfo({shop_id})
 		//根据结果提交一个mutation
 		if(result.OK===true){
-			const StoreInfo = result.data
+			const StoreInfo = result.data[0]
 			commit(RECEIVE_STORE,{StoreInfo})
 		}
 	},
 	//同步Manager界面折叠状态
 	ChangeFoldState({commit},FoldState){
 		commit(RECEIVE_FOLD_STATE,{FoldState})
+	},
+	//同步更新编辑状态
+	UpdateEditState({commit},EditState){
+		commit(RECEIVE_EDIT_STATE,{EditState})
 	}
 }

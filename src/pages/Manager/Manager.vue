@@ -2,9 +2,7 @@
 	<div id="Manager">
 		<Header v-show="$route.meta.ManagerGuide"></Header>
 		<div class="Manager-content" :class="{'content-fold':!FoldState}">
-			<keep-alive>
-				<router-view></router-view>
-			</keep-alive>
+			<router-view></router-view>
 		</div>
 		<PageBottom></PageBottom>
 	</div>

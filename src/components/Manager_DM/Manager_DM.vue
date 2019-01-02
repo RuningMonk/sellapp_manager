@@ -36,25 +36,38 @@
 </template>
 
 <script>
-	import {mapState} from 'vuex'
+	import {mapState,mapActions} from 'vuex'
 	
 	export default{
 		computed: {
 			...mapState([
-				'DMInfo'
+				'DMInfo',
+				'shop_id'
 			])
 		},
 		methods: {
+			...mapActions([
+				'UpdateEditState',
+				'getDMInfo'
+			]),
 			delClick(table,row){
 				console.log(table+','+row);
 				// let Target = document.getElementById('table'+table);
 				// Target.deleteRow(row+1)
 			},
 			editClick(table,row){
-				console.log(table+','+row);
-				
+				const EditState = {
+					edit: true,
+					table: table,
+					row: row
+				};
+				this.UpdateEditState(EditState);
+				this.$router.replace('/manager/entry')
 			}
 		},
+		async mounted(){
+			this.getDMInfo(this.shop_id)
+		}
 	}
 	
 </script>

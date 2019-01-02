@@ -1,5 +1,6 @@
 <template>
 	<div id="Entry" class="container-fluid">
+		<!-- <div class="shadow"></div> -->
 		<div class="row justify-content-center">
 			<div class="col-12 Entry-part">
 				<div class="part-body">
@@ -15,7 +16,7 @@
 							<div class="relative-box">
 								<div class="box-title must">商品类别</div>
 								<input type="button" class="category box-text" @click="dropdownShow=!dropdownShow" :value="category?category:FirstClassName">
-								<div class="box-descropt" style="top: 51%">您想要添加的商品的类别，可在已有的类别中选择。如果需要特别添加新类别请前往<router-link tag="span" to="/manager/setting" class="link-to-setting">商铺设置</router-link>中添加类别</div>
+								<div class="box-descropt" style="top: 51%">您想要添加的商品的类别，可在已有的类别中选择。如果需要特别添加新类别请前往 <router-link tag="span" to="/manager/setting" class="link-to-setting">商铺设置</router-link> 中添加类别</div>
 								<ul class="dropdown-ul" :class="{'dropdown-show':dropdownShow}">
 									<li class="dropdown-li" v-for="item in DMInfo" :key="item.ID" @click="listClick(item.class_name)">{{item.class_name}}</li>
 								</ul>
@@ -43,20 +44,20 @@
 					<div class="part-right flex-box">
 						<div class="show-box flex-box">
 							<div class="relative-box">
-								<img src='../../../static/img/default_img.jpg' class="show">
+								<img :src="EditInfo.src?EditInfo.src:'../../../static/img/default_img.jpg'" class="show">
 							</div>
 						</div>
 						<div class="url-box flex-box">
 							<div class="relative-box">
 								<div class="box-title" style="left: 10%">图片上传</div>
 								<input type="text" class="url-src box-text" v-model="src" placeholder="...">
-								<input type="button" class="url-sub btn btn-dark btn-sm" value="预览" @click="SubSrc()">
+								<input type="button" class="url-sub btn btn-dark btn-sm" value="更新预览" @click="preview()">
 								<div class="box-descropt" style="left: 10%;top: 78%;width: 80%">请选择正确、清晰的网络图片地址，卖相也是吸引顾客重要的一环哦</div>	
 							</div>
 						</div>
 						<div class="submit-box flex-box">
 							<div class="relative-box">
-								<input type="button" class="config-btn btn btn-danger btn-sm" value="确定">
+								<input type="button" class="config-btn btn btn-danger btn-sm" :value="EditState.edit?'提交修改':'确定'">
 								<input type="button" class="reset-btn btn btn-primary btn-sm" value="重置" @click="Reset()">
 							</div>
 						</div>
@@ -68,7 +69,7 @@
 </template>
 
 <script>
-	import {mapState,mapActions} from 'vuex'
+	import {mapState,mapActions,mapGetters} from 'vuex'
 	
 	export default{
 		data() {
@@ -78,12 +79,18 @@
 				category:'',
 				price:'',
 				tags:'',
-				src:''
+				src:'',
+				
 			}
 		},
 		computed: {
 			...mapState([
 				'DMInfo',
+				'EditState',
+				'shop_id'
+			]),
+			...mapGetters([
+				'EditInfo'
 			]),
 			FirstClassName(){
 				if(this.DMInfo[0]){
@@ -96,7 +103,8 @@
 		methods: {
 			...mapActions([
 				'getStoreInfo',
-				'getDMInfo'
+				'getDMInfo',
+				'UpdateEditState'
 			]),
 			listClick(value) {
 				this.category = value;
@@ -117,7 +125,7 @@
 					}
 				}
 			},
-			SubSrc(){
+			preview(){
 				$(".show").attr('src',this.src)
 			},
 			Reset(){
@@ -130,7 +138,8 @@
 		},
 		async mounted(){
 			const that = this;
-			that.getDMInfo(2);
+			that.getDMInfo(this.shop_id);
+			
 			$(".price").click(function(){
 				if(that.price!=''){
 					that.price = parseFloat(that.price)
@@ -150,13 +159,41 @@
 			tags(value){
 				if(this.tags.length>40)
 					this.tags = this.tags.substring(0,40)
+			},
+			EditInfo(value){
+				//判断,如果当前状态为修改模式,就把信息先放上去
+				if(this.EditState.edit){
+					this.name = this.EditInfo.name;
+					this.category = this.EditInfo.class_name;
+					this.price = this.EditInfo.price;
+					this.tags = this.EditInfo.tags;
+					this.src = this.EditInfo.src;
+				}
 			}
+		},
+		destroyed(){
+			const EditState = {
+				edit: false,
+				table: 0,
+				row: 0
+			};
+			this.UpdateEditState(EditState)
 		}
 	}
 	
 </script>
 
 <style scoped="scoped">
+	
+	.shadow{
+		width: 100%;
+		height: calc(850px + 25vh);
+		position: absolute;
+		background-color: rgba(0, 0, 0, 0.4);
+		z-index: 5;
+		left: 0;
+		top: 0;
+	}
 	
 	#Entry{
 		width: 100%;

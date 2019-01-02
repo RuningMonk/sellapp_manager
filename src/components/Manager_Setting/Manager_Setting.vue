@@ -5,12 +5,12 @@
 				<div class="body-left">
 					<div class="input_list body-part">
 						<div class="relative-box">
-							<div class="name">
+							<div class="name" :class="{'name-minus':AddTagsCount>4}">
 								<div class="box-title must">店铺名称</div>
 								<input type="text" class="name-input box-text" v-model="name">
 							</div>
-							<div class="time">
-								<div class="box-title must" :style="{top: OnlyLi?'25%':'5%'}">营业时间</div>
+							<div class="time" :class="{'time-minus':AddTagsCount>4}">
+								<div class="box-title must" :style="{top: TimeTitleTop}">营业时间</div>
 								<ul class="time-ul">
 									<li class="time-li" :class="{'time-li-only': OnlyLi}">
 										<input type="time" class="time-input-start box-text">
@@ -24,14 +24,14 @@
 									</li>
 								</ul>
 							</div>
-							<div class="position">
+							<div class="position" :class="{'position-minus':AddTagsCount>4}">
 								<div class="box-title must">店铺地址</div>
 								<input type="text" class="position-input box-text" v-model="position">
 							</div>
-							<div class="tags">
-								<div class="box-title" style="top: 5%">店铺优惠</div>
+							<div class="tags" :class="{'tags-plus':AddTagsCount>4}">
+								<div class="box-title">店铺优惠</div>
 								<ul class="tags-ul">
-									<li class="tags-li" v-for="(item,index) in 5" :key="item.ID" :class="{hide: AddTagsCount < index}">
+									<li class="tags-li" v-for="(item,index) in 7" :key="item.ID" :class="{hide: AddTagsCount < index}">
 										<input type="text" class="tags-input box-text">
 										<div class="li-add" style="left: 85%" @click="TagAdd()" v-if="index==0"></div>
 										<div class="li-del" style="left: 85%" @click="TagDel()" v-if="AddTagsCount==index&&index!=0"></div>
@@ -64,7 +64,7 @@
 				<div class="body-right">
 					<div class="img body-part" :class="{'img-plus': ImgBoxPlus}">
 						<div class="relative-box">
-							<div class="category" :class="{'plus': ImgBoxPlus}">
+							<div class="category" :class="{'plus': ImgBoxPlus,'ImgView-fold': ImgPreView}">
 								<div class="box-title must" style="left: 10%;top: 5%">分类设置</div>
 								<ul class="category-ul" :class="{'category-ul-type1': !ImgBoxPlus,'category-ul-type2': ImgBoxPlus}">
 									<li class="category-li" v-for="(item,index) in 10" :key="item.ID" :class="{hide: AddCateCount < index}">
@@ -75,10 +75,12 @@
 									</li>
 								</ul>
 							</div>
-							<div class="url" :class="{'pre-minus': CategoryPre,'minus': ImgBoxPlus&&!CategoryPre}">
-								<div class="box-title" style="left: 10%;top: 5%">图片上传</div>
-								<input type="text" class="url-src box-text" v-model="src" placeholder="...">
-								<input type="button" class="url-sub btn btn-dark btn-sm" value="预览" @click="SubSrc()">
+							<div class="url" :class="{'pre-minus': CategoryPre,'minus': ImgBoxPlus&&!CategoryPre,'ImgView-spread': ImgPreView}">
+								<div class="box-title view-title1" :class="{'view-title-hide':!ImgPreView,'view-title-plus':ImgPreView&&ImgBoxPlus}">图片预览</div>
+								<img src="" class="view-img" :class="{'view-img-hide':!ImgPreView,'view-img-plus':ImgPreView&&ImgBoxPlus}">
+								<div class="box-title view-title2" :class="{'view-title2-spread-type1':ImgPreView,'view-title2-spread-type2':ImgPreView&&ImgBoxPlus}">图片上传</div>
+								<input type="text" class="url-src box-text" :class="{'view-text-spread-type1':ImgPreView,'view-text-spread-type2':ImgPreView&&ImgBoxPlus}" v-model="src" placeholder="...">
+								<input type="button" class="url-sub btn btn-sm" :class="{'view-btn-spread-type1':ImgPreView,'view-btn-spread-type2':ImgPreView&&ImgBoxPlus,'btn-primary':!ImgPreView,'btn-dark':ImgPreView}" :value="ImgPreView?'关闭预览':'预览'" @click="preview()">
 							</div>
 						</div>
 					</div>
@@ -91,13 +93,13 @@
 									<span class="unit">¥</span>
 								</div>
 								<div class="fee">
-								<div class="box-title must">配送费</div>
-									<input type="number" class="price-input box-text" v-model="fee" @click="number_click(fee,1)" @blur="number_blur(fee,1)">
-									<span class="unit">¥</span>
+								<div class="box-title must" style="left: 0%">配送费</div>
+									<input type="number" class="price-input box-text" v-model="fee" @click="number_click(fee,1)" @blur="number_blur(fee,1)" style="left: 25%">
+									<span class="unit" style="left: 47%">¥</span>
 								</div>
 							</div>
 							<div class="announce">
-								<div class="box-title" style="left: 15%;top: 10%">店铺公告</div>
+								<div class="box-title" style="left: 13%;top: 10%">店铺公告</div>
 								<textarea v-model="announce" cols="30" rows="2" class="announce-content" maxlength="40" placeholder="..."></textarea>
 							</div>
 						</div>
@@ -114,7 +116,7 @@
 </template>
 
 <script>
-	import {mapState} from 'vuex'
+	import {mapState,mapActions} from 'vuex'
 	
 	export default{
 		data() {
@@ -124,22 +126,39 @@
 				AddCateCount: 0,
 				dropdownShow: false,
 				ImgBoxPlus: false,
+				ImgPreView: false,
 				
 				name: '',
-				time: '',
 				position: '',
 				classify: '',
 				src: '',
 				announce: '',
 				min_price: '',
 				fee: ''
-				
 			}
 		},
 		computed: {
 			...mapState([
-				'ClassifyList'
+				'ClassifyList',
+				'shop_id',
+				'StoreInfo',
+				'DMInfo'
 			]),
+			TimeTitleTop(){
+				if(this.AddTagsCount>4){
+					if(this.OnlyLi){
+						return '25%'
+					}else{
+						return '3%'
+					}
+				}else{
+					if(this.OnlyLi){
+						return '23%'
+					}else{
+						return '7%'
+					}
+				}
+			},
 			FirstClassName(){
 				if(this.ClassifyList[0]){
 					return this.ClassifyList[0]
@@ -153,11 +172,25 @@
 				}else{
 					return false
 				}
+			},
+			time(){
+				let Time = '';
+				if(this.OnlyLi){
+					Time = $('.time-input-start')[0].value + '-' +  $('.time-input-end')[0].value;
+				}else{
+					Time = $('.time-input-start')[0].value + '-' +  $('.time-input-end')[0].value;
+					Time += ',' + $('.time-input-start')[1].value + '-' +  $('.time-input-end')[1].value
+				}
+				return Time
 			}
 		},
 		methods: {
+			...mapActions([
+				'getStoreInfo',
+				'getDMInfo'
+			]),
 			TagAdd(){
-				if(this.AddTagsCount < 4){
+				if(this.AddTagsCount < 6){
 					this.AddTagsCount++;
 				}
 			},
@@ -180,8 +213,9 @@
 					this.AddCateCount--;
 				}
 			},
-			SubSrc(){
-				console.log(this.src)
+			preview(){
+				this.ImgPreView = !this.ImgPreView;
+				$(".view-img").attr('src',this.src)
 			},
 			number_click(value,flag){
 				if(flag==0){
@@ -209,7 +243,9 @@
 		},
 		async mounted(){
 			const that = this;
-			
+			that.getStoreInfo(that.shop_id);
+			that.getDMInfo(that.shop_id);
+			// console.log(that.StoreInfo)
 		},
 		watch: {
 			AddCateCount(value){
@@ -218,6 +254,57 @@
 				}else{
 					this.ImgBoxPlus = false
 				}
+			},
+			StoreInfo(value){
+				// 店铺名称
+				this.name = this.StoreInfo.Store_name;
+				// 店铺位置
+				this.position = this.StoreInfo.position;
+				//店铺类型
+				this.classify = this.StoreInfo.Store_classify;
+				// 店铺公告
+				this.announce = this.StoreInfo.announcement;
+				// 店铺头像
+				this.src = this.StoreInfo.Store_src;
+				// 营业时间
+				if(this.StoreInfo.serve_time.indexOf(',')!=-1){
+					this.OnlyLi = false;
+					let timeArr = this.StoreInfo.serve_time.split(',');
+					for(let i = 0;i < timeArr.length; i++){
+						let time = timeArr[i].split('-');
+						$('.time-input-start')[i].value = time[0];
+						$('.time-input-end')[i].value = time[1]
+					}
+				}else{
+					this.OnlyLi = true;
+					let time = this.StoreInfo.serve_time.split('-');
+					$('.time-input-start')[0].value = time[0];
+					$('.time-input-end')[0].value = time[1]
+				}
+				// 优惠设置
+				let tagArr = this.StoreInfo.Store_tags.split(',');
+				this.AddTagsCount = tagArr.length - 1;
+				for(let i = 0;i < tagArr.length; i++){
+					$('.tags-input')[i].value = tagArr[i]
+				}
+				//配送设置
+				if(this.StoreInfo.delivery == '美团跑腿'){
+					$('#way1')[0].checked = true
+				}else{
+					$('#way2')[0].checked = true
+				}
+				//底价设置
+				this.min_price = parseFloat(this.StoreInfo.min_price).toFixed(2);
+				this.fee = parseFloat(this.StoreInfo.fee).toFixed(2);
+			},
+			DMInfo(value){
+				//分类设置
+				let ClassArr = new Array();
+				for(let i = 0;i < this.DMInfo.length; i++){
+					ClassArr.push(this.DMInfo[i].class_name);
+					$('.category-input')[i].value = this.DMInfo[i].class_name
+				}
+				this.AddCateCount = ClassArr.length - 1;
 			}
 		}
 	}
@@ -312,6 +399,7 @@
 		height: 20%;
 		position: relative;
 		padding: 5px 10px;
+		transition: all 0.5s;
 	}
 	
 	.tags{
@@ -319,6 +407,7 @@
 		height: 40%;
 		position: relative;
 		padding: 5px 10px;
+		transition: all 0.5s;
 	}
 	
 	.box-title{
@@ -331,6 +420,10 @@
 		position: absolute;
 		left: 20%;
 		top: 15%;
+	}
+	
+	.tags .box-title{
+		top: 0%;
 	}
 	
 	.must::after{
@@ -379,7 +472,7 @@
 	
 	.time-input-start::after{
 		content: '开始';
-		left: 70%;
+		left: 80%;
 		top: 50%;
 		font-size: 14px;
 		font-family: Roboto, sans-serif;
@@ -397,7 +490,7 @@
 	
 	.time-input-end::after{
 		content: '结束';
-		left: 70%;
+		left: 80%;
 		top: 50%;
 		font-size: 14px;
 		font-family: Roboto, sans-serif;
@@ -449,13 +542,14 @@
 	
 	.tags-ul{
 		width: 100%;
-		height: 200px;
+		height: auto;
 		margin-bottom: 0;
 		position: absolute;
-		top: 57%;
+		top: 10%;
 		left: 50%;
 		
-		transform: translate(-50%,-50%);
+		transform: translateX(-50%);
+		
 	}
 	
 	.tags-li{
@@ -466,7 +560,7 @@
 		position: relative;
 		transition: all 0.5s;
 		opacity: 1;
-		z-index: 1;
+		z-index: 0;
 	}
 	
 	.tags-input{
@@ -595,7 +689,7 @@
 	
 	.dropdown-show{
 		opacity: 1;
-		z-index: 1;
+		z-index: 0;
 		margin-top: 50px;
 	}
 	
@@ -620,7 +714,8 @@
 		height: 70%;
 		position: relative;
 		transition: all 0.5s;
-		
+		opacity: 1;
+		z-index: 0;
 	}
 	
 	.category-ul{
@@ -651,7 +746,7 @@
 		position: relative;
 		transition: all 0.5s;
 		opacity: 1;
-		z-index: 1;
+		z-index: 0;
 	}
 	
 	.li-index{
@@ -676,7 +771,7 @@
 		position: relative;
 		transition: all 0.5s;
 		opacity: 1;
-		z-index: 1;
+		z-index: 0;
 		
 	}
 	
@@ -759,7 +854,7 @@
 	}
 	
 	.announce-content{
-		width: 70%;
+		width: 75%;
 		height: 120px;
 		position: absolute;
 		left: 50%;
@@ -781,6 +876,114 @@
 		transform: translate(-50%,-50%);
 	}
 	
+	.ImgView-fold{
+		height: 0%;
+		opacity: 0;
+		z-index: -1;
+	}
+	
+	.ImgView-spread{
+		height: 100%;
+	}
+	
+	.view-title1{
+		transition: all 0.5s;
+		opacity: 1;
+		z-index: 0;
+		left: 10%;
+		top: 5%;
+	}
+	
+	.view-title2{
+		left: 10%;
+		top: 5%;
+	}
+	
+	.view-img{
+		transition: all 0.5s;
+		opacity: 1;
+		z-index: 0;
+		width: 200px;
+		height: 200px;
+		position: absolute;
+		left: 50%;
+		top: 10%;
+		transform: translateX(-50%);
+	}
+	
+	.view-title-hide{
+		opacity: 0;
+		z-index: -1;
+	}
+	
+	.view-img-hide{
+		opacity: 0;
+		z-index: -1;
+		height: 0;
+		width: 0;
+	}
+	
+	.view-title2-spread-type1{
+		top: 72%;
+	}
+	
+	.view-title2-spread-type2{
+		top: 105%;
+	}
+	
+	.view-text-spread-type1{
+		top: 88%;
+	}
+	
+	.view-text-spread-type2{
+		top: 118%;
+	}
+	
+	.view-btn-spread-type1{
+		top: 88%;
+	}
+	
+	.view-btn-spread-type2{
+		top: 118%;
+	}
+	
+	.view-title-plus{
+		top: 35%;
+	}
+	
+	.view-img-plus{
+		top: 45%;
+		width: 250px;
+		height: 250px;
+	}
+	
+	.name-minus,.time-minus,.position-minus{
+		height: 15%;
+	}
+	
+	.name-minus .box-title,.time-minus .box-title,.position-minus .box-title{
+		top: 14%;
+	}
+	
+	.name-minus .box-text,.time-minus .box-text,.position-minus .box-text{
+		top: 70%;
+	}
+	
+	.time-minus .li-add,.time-minus .li-del{
+		top: 70%;
+	}
+	
+	.tags-plus{
+		height: 55%;
+	}
+	
+	.tags-plus .box-title{
+		top: 5%;
+	}
+	
+	.tags-plus .tags-ul{
+		top: 11%;
+	}
 	
 	/*去除input的各种自带的调整按钮(太丑了)*/
 	input::-webkit-outer-spin-button,

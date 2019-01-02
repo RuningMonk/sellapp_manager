@@ -4,7 +4,8 @@
 
 export default {
 	FoldState:true,			//Manager界面的折叠效果管理
-	shop_id:2,				//测试用的shop_id
+	EditState:{},			//管理录入页面是新增还是修改,并记录修改时的目标位置
+	shop_id:3,				//测试用的shop_id
 	DMInfo:{},				//店铺商品信息
 	StoreInfo:{},			//店铺信息
 	BannerInfo:[
