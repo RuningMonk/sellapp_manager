@@ -140,7 +140,7 @@
 		computed: {
 			...mapState([
 				'ClassifyList',
-				'shop_id',
+				'LoginState',
 				'StoreInfo',
 				'DMInfo'
 			]),
@@ -243,8 +243,8 @@
 		},
 		async mounted(){
 			const that = this;
-			that.getStoreInfo(that.shop_id);
-			that.getDMInfo(that.shop_id);
+			that.getStoreInfo(that.LoginState.shop_id);
+			that.getDMInfo(that.LoginState.shop_id);
 			// console.log(that.StoreInfo)
 		},
 		watch: {

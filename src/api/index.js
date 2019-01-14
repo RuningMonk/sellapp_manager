@@ -8,10 +8,19 @@ import ajax from './ajax.js'
 const BASE_URL = '/api'
 // const BASE_URL = 'http://100.89.230.234:2400'
 
-//1.根据账户获取商铺商品信息
+//1.登录请求
+export const reqLogin = ({user,pwd}) => ajax(BASE_URL+'/manager_login',{user,pwd},'POST')
+//2.根据账户获取商铺商品信息
 export const reqDMInfo = ({shop_id}) => ajax(BASE_URL+'/shop_goods',{shop_id})
-//2.根据账户获取商铺信息
+//3.根据账户获取商铺信息
 export const reqStoreInfo = ({shop_id}) => ajax(BASE_URL+'/shop_info',{shop_id},'POST')
+//4.获取访问时的登录状态
+export const reqLoginState = () => ajax(BASE_URL+'/manager_login_state',{},'POST')
+//5.用户登出
+export const reqQuitLogin = () => ajax(BASE_URL+'/manager_quit_login')
+//6.数据更新
+export const reqUpdate = ({sql}) => ajax(BASE_URL+'/manager_update',{sql},'POST')
+
 
 //1.根据经纬度获取位置
 export const reqBanners = () => ajax(BASE_URL+'/banners')
@@ -21,16 +30,12 @@ export const reqBanners = () => ajax(BASE_URL+'/banners')
 export const reqStoreList = () => ajax(BASE_URL+'/storelist')
 //4.根据经纬度和关键字搜索商铺列表
 //export const reqAddress = () => ajax()
-//5.用户名密码登录
-export const reqLogin = ({name,pwd,captcha}) => ajax(BASE_URL+'/login',{name,pwd,captcha},'POST')
 //6.发送短信验证码
 //export const reqAddress = () => ajax()
 //7.手机号验证码登录
 //export const reqAddress = () => ajax()
-//8.根据会话获取用户信息
-export const reqLoginState = () => ajax(BASE_URL+'/login_state',{},'POST')
-//9.用户登出
-export const reqQuitLogin = () => ajax(BASE_URL+'/quit_login')
+
+
 //11.获取当前店铺的评价列表
 export const reqCommentsList = ({shop_id}) => ajax(BASE_URL+'/shop_comments',{shop_id})
 //12.店铺的搜索

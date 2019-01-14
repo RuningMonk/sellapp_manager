@@ -8,7 +8,7 @@
 						<div class="name-box flex-box">
 							<div class="relative-box">
 								<div class="box-title must">商品名称</div>
-								<input type="text" class="name box-text" v-model="name" placeholder="...">
+								<input type="text" class="name box-text" v-model="name" placeholder="..." :class="{'wrong':!NameCheck}" :disabled="EditState.edit">
 								<div class="box-descropt">您想要添加的商品的名称，请将字数限制在1-20以内。一个好听的名字说不定会提升销量哦</div>
 							</div>
 						</div>
@@ -25,7 +25,7 @@
 						<div class="price-box flex-box">
 							<div class="relative-box">
 								<div class="box-title must">商品价格</div>
-								<input type="number" class="price box-text" v-model="price">
+								<input type="number" class="price box-text" v-model="price" placeholder="..." :class="{'wrong':!PriceCheck}">
 								<div class="readjust">
 									<input type="button" class="readjust-up" @click="ChangePrice('up')">
 									<input type="button" class="readjust-down" @click="ChangePrice('down')">
@@ -49,16 +49,16 @@
 						</div>
 						<div class="url-box flex-box">
 							<div class="relative-box">
-								<div class="box-title" style="left: 10%">图片上传</div>
-								<input type="text" class="url-src box-text" v-model="src" placeholder="...">
+								<div class="box-title must" style="left: 10%">图片上传</div>
+								<input type="text" class="url-src box-text" v-model="src" placeholder="..." :class="{'wrong':!SrcCheck}">
 								<input type="button" class="url-sub btn btn-dark btn-sm" value="更新预览" @click="preview()">
 								<div class="box-descropt" style="left: 10%;top: 78%;width: 80%">请选择正确、清晰的网络图片地址，卖相也是吸引顾客重要的一环哦</div>	
 							</div>
 						</div>
 						<div class="submit-box flex-box">
 							<div class="relative-box">
-								<input type="button" class="config-btn btn btn-danger btn-sm" :value="EditState.edit?'提交修改':'确定'">
-								<input type="button" class="reset-btn btn btn-primary btn-sm" value="重置" @click="Reset()">
+								<input type="button" class="config-btn btn btn-danger btn-sm" :value="EditState.edit?'提交修改':'确定'" @click="UpdateClick()" :disabled="!NameCheck||!PriceCheck||!SrcCheck">
+								<input type="button" class="reset-btn btn btn-primary btn-sm" value="重置" @click="!EditState.edit?ClearClick():ResetClick()">
 							</div>
 						</div>
 					</div>
@@ -79,15 +79,14 @@
 				category:'',
 				price:'',
 				tags:'',
-				src:'',
-				
+				src:''
 			}
 		},
 		computed: {
 			...mapState([
 				'DMInfo',
 				'EditState',
-				'shop_id'
+				'LoginState'
 			]),
 			...mapGetters([
 				'EditInfo'
@@ -98,13 +97,35 @@
 				}else{
 					return ''
 				}
+			},
+			NameCheck(){
+				if(this.name){
+					return true;
+				}else{
+					return false;
+				}
+			},
+			PriceCheck(){
+				if(this.price){
+					return true;
+				}else{
+					return false;
+				}
+			},
+			SrcCheck(){
+				if(this.src){
+					return true;
+				}else{
+					return false;
+				}
 			}
 		},
 		methods: {
 			...mapActions([
 				'getStoreInfo',
 				'getDMInfo',
-				'UpdateEditState'
+				'UpdateEditState',
+				'Update'
 			]),
 			listClick(value) {
 				this.category = value;
@@ -128,17 +149,55 @@
 			preview(){
 				$(".show").attr('src',this.src)
 			},
-			Reset(){
+			UpdateClick(){
+				let sql;
+				if(this.EditState.edit){
+					sql = "UPDATE goods_table SET class_name='" + this.category + "',price='" + this.price + "',src='" + this.src + "',tags='" + this.tags + "' WHERE name='" + this.name + "'"
+					let result = this.Update(sql);
+					if(result){
+						alert('信息修改成功');
+						this.ClearClick();
+						this.$router.push('/manager/datamanager')
+					}
+				}else{
+					if(!this.category){
+						this.category = this.FirstClassName
+					}
+					if(this.tags){
+						sql = "INSERT INTO goods_table(shop_id,class_name,name,src,price,tags) VALUES ('";
+						sql += this.LoginState.shop_id+"','"+this.category+"','"+this.name+"','"+this.src+"','"+this.price+"','"+this.tags+"')"
+					}else{
+						sql = "INSERT INTO goods_table(shop_id,class_name,name,src,price) VALUES ('"; 
+						sql += this.LoginState.shop_id+"','"+this.category+"','"+this.name+"','"+this.src+"','"+this.price+"')"
+					}
+					let result = this.Update(sql);
+					if(result){
+						alert('商品录入成功');
+						this.ClearClick();
+						this.$router.push('/manager/datamanager')
+					}
+				}
+			},
+			ClearClick(){
 				this.name = '';
 				this.category = this.FirstClassName;
 				this.price = '0.00';
 				this.tags = '';
 				this.src = ''
+			},
+			ResetClick(){
+				if(this.EditState.edit){
+					this.name = this.EditInfo.name;
+					this.category = this.EditInfo.class_name;
+					this.price = this.EditInfo.price;
+					this.tags = this.EditInfo.tags;
+					this.src = this.EditInfo.src;
+				}
 			}
 		},
 		async mounted(){
 			const that = this;
-			that.getDMInfo(this.shop_id);
+			that.getDMInfo(that.LoginState.shop_id);
 			
 			$(".price").click(function(){
 				if(that.price!=''){
@@ -153,12 +212,16 @@
 		},
 		watch:{
 			name(value){
-				if(this.name.length>20)
-					this.name = this.name.substring(0,20)
+				if(this.name){
+					if(this.name.length>20)
+						this.name = this.name.substring(0,20)
+				}
 			},
 			tags(value){
-				if(this.tags.length>40)
-					this.tags = this.tags.substring(0,40)
+				if(this.tags){
+					if(this.tags.length>40)
+						this.tags = this.tags.substring(0,40)
+				}
 			},
 			EditInfo(value){
 				//判断,如果当前状态为修改模式,就把信息先放上去
@@ -469,6 +532,10 @@
 	
 	.link-to-setting:hover{
 		color: #06c1ae;
+	}
+	
+	.wrong{
+		border: solid 1px #e9686b;
 	}
 	
 	/* 关闭input type="number"时自带的数值调整按钮 */

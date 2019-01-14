@@ -46,18 +46,18 @@
 				<div class="form-body">
 					<div class="body-part" v-if="LoginType==0">
 						<img src="../../../static/img/icon/user_icon.png" class="input-icon">
-						<input type="text" class="form-input" v-model="user" placeholder="账号">
+						<input type="text" id="user" class="form-input" v-model="user" placeholder="账号/手机号">
 					</div>
 					<div class="body-part" v-if="LoginType==0">
 						<img src="../../../static/img/icon/pwd-icon.png" class="input-icon">
-						<input type="text" class="form-input" v-model="pwd" placeholder="密码">
+						<input type="password" id="pwd" class="form-input" v-model="pwd" placeholder="密码">
 					</div>
 					<div class="body-part" v-if="LoginType==1">
 						<img src="../../../static/img/icon/phone_icon.png" class="input-icon">
-						<input type="text" class="form-input" v-model="phone" placeholder="手机号">
+						<input type="text" id="phone" class="form-input" v-model="phone" placeholder="手机号">
 					</div>
 					<div class="body-part" v-if="LoginType==1">
-						<input type="text" class="form-input phone-code" v-model="phoneCode" placeholder="验证码">
+						<input type="text" id="code" class="form-input phone-code" v-model="phoneCode" placeholder="验证码">
 						<input type="button" class="phone-code-send" :disabled="!PhoneCheck" v-model="TimeShow" @click="verification()" />
 					</div>
 					<div class="body-part">
@@ -74,6 +74,7 @@
 </template>
 
 <script>
+	import {mapActions,mapState} from 'vuex'
 	
 	export default{
 		data(){
@@ -93,6 +94,9 @@
 			}
 		},
 		computed: {
+			...mapState([
+				'LoginState'
+			]),
 			PhoneCheck(){
 				const that = this;
 				if(that.phone){
@@ -132,6 +136,10 @@
 			}
 		},
 		methods: {
+			...mapActions([
+				'Login',
+				'getLoginState'
+			]),
 			listClick(value) {
 				this.dropdownValue = value;
 				this.dropdownShow = false
@@ -154,7 +162,33 @@
 				this.LoginType = index
 			},
 			LoginRequest(){
-				this.$router.replace('/manager/home')
+				const that = this;
+				if(that.LoginType==0){
+					let user = that.user;
+					let pwd = that.pwd
+					
+					if(user){
+						$('#user').css('border','solid 1px #A9A9A9');
+						if(pwd){
+							$('#pwd').css('border','solid 1px #A9A9A9');
+							that.Login({user,pwd});
+						}else{
+							$('#pwd').css('border','solid 1px #E9686B')
+						}
+					}else{
+						$('#user').css('border','solid 1px #E9686B')
+					}
+				}
+			}
+		},
+		async mounted(){
+			this.getLoginState();
+		},
+		watch: {
+			LoginState(value) {
+				if(this.LoginState.Login){
+					this.$router.replace('/manager/home')
+				}
 			}
 		},
 	}
@@ -457,6 +491,7 @@
 		outline-color: #3DC6B6;
 		font-size: 14px;
 		padding-left: 30px;
+		border: solid 1px #A9A9A9;
 	}
 	
 	.phone-code{

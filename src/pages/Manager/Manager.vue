@@ -20,6 +20,7 @@
 		},
 		computed: {
 			...mapState([
+				'LoginState',
 				'FoldState'
 			])
 		},
@@ -29,7 +30,12 @@
 			])
 		},
 		async mounted(){
-			this.getDMInfo(2)
+			const that = this;
+			if(!that.LoginState.Login){
+				that.$router.replace('/seller')
+			}else{
+				that.getDMInfo(2)
+			}
 		}
 	}
 	

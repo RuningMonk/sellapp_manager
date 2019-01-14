@@ -25,7 +25,7 @@
 		</div>
 		<div class="Header-body" :class="{'Header-unfold':FoldState}">
 			<div class="fold-function" @click="ChangeFoldState(!FoldState)"><img src="../../../static/img/icon/fold-icon.png" class="fold-icon"></div>
-			<div class="Header-function first-function"><img src="../../../static/img/icon/more-icon.png" class="function-icon"></div>
+			<div class="Header-function first-function" @click="quit()"><img src="../../../static/img/icon/more-icon.png" class="function-icon"></div>
 			<div class="Header-function"><img src="../../../static/img/icon/use-icon.png" class="function-icon"></div>
 			<div class="Header-function have"><img src="../../../static/img/icon/message-icon.png" class="function-icon"></div>
 		</div>
@@ -43,8 +43,16 @@
 		},
 		methods: {
 			...mapActions([
-				'ChangeFoldState'
-			])
+				'ChangeFoldState',
+				'QuitLogin'
+			]),
+			quit(){
+				const that = this;
+				that.QuitLogin();
+				setTimeout(function(){
+					that.$router.replace('/seller')
+				},800)
+			}
 		},
 	}
 	

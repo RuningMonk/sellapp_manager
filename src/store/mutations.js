@@ -3,19 +3,20 @@
 */
 
 import {
-	RECEIVE_TEST,
+	RECEIVE_LOGIN_STATE,
 	RECEIVE_FOLD_STATE,
 	RECEIVE_EDIT_STATE,
 	RECEIVE_DM,
-	RECEIVE_STORE
+	RECEIVE_STORE,
+	CLEAN_LOGIN_STATE
 	
 } from './mutation-types'
 
 import Vue from 'vue'
 
 export default {
-	[RECEIVE_TEST](state, {testinfo}) {
-		state.testinfo = testinfo
+	[RECEIVE_LOGIN_STATE](state, {LoginState}) {
+		state.LoginState = LoginState
 	},
 	[RECEIVE_FOLD_STATE](state, {FoldState}) {
 		state.FoldState = FoldState
@@ -28,5 +29,8 @@ export default {
 	},
 	[RECEIVE_EDIT_STATE](state, {EditState}) {
 		state.EditState = EditState
+	},
+	[CLEAN_LOGIN_STATE](state) {
+		state.LoginState = {}
 	}
 }

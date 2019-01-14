@@ -42,7 +42,7 @@
 		computed: {
 			...mapState([
 				'DMInfo',
-				'shop_id'
+				'LoginState'
 			])
 		},
 		methods: {
@@ -51,9 +51,7 @@
 				'getDMInfo'
 			]),
 			delClick(table,row){
-				console.log(table+','+row);
-				// let Target = document.getElementById('table'+table);
-				// Target.deleteRow(row+1)
+				console.log('delete')
 			},
 			editClick(table,row){
 				const EditState = {
@@ -62,11 +60,11 @@
 					row: row
 				};
 				this.UpdateEditState(EditState);
-				this.$router.replace('/manager/entry')
+				this.$router.push('/manager/entry')
 			}
 		},
 		async mounted(){
-			this.getDMInfo(this.shop_id)
+			this.getDMInfo(this.LoginState.shop_id)
 		}
 	}
 	
