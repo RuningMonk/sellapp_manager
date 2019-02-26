@@ -7,7 +7,7 @@
 						<div class="relative-box">
 							<div class="name" :class="{'name-minus':AddTagsCount>4}">
 								<div class="box-title must">店铺名称</div>
-								<input type="text" class="name-input box-text" v-model="name">
+								<input type="text" class="name-input box-text" v-model="name" disabled="disabled">
 							</div>
 							<div class="time" :class="{'time-minus':AddTagsCount>4}">
 								<div class="box-title must" :style="{top: TimeTitleTop}">营业时间</div>
@@ -106,7 +106,7 @@
 					</div>
 					<div class="sub body-part">
 						<div class="relative-box">
-							<input type="button" class="config-btn btn btn-danger btn-sm" value="保存">
+							<input type="button" class="config-btn btn btn-danger btn-sm" value="保存" @click="UpdateClick()">
 						</div>
 					</div>
 				</div>
@@ -173,21 +173,13 @@
 					return false
 				}
 			},
-			time(){
-				let Time = '';
-				if(this.OnlyLi){
-					Time = $('.time-input-start')[0].value + '-' +  $('.time-input-end')[0].value;
-				}else{
-					Time = $('.time-input-start')[0].value + '-' +  $('.time-input-end')[0].value;
-					Time += ',' + $('.time-input-start')[1].value + '-' +  $('.time-input-end')[1].value
-				}
-				return Time
-			}
+			
 		},
 		methods: {
 			...mapActions([
 				'getStoreInfo',
-				'getDMInfo'
+				'getDMInfo',
+				'Update'
 			]),
 			TagAdd(){
 				if(this.AddTagsCount < 6){
@@ -238,6 +230,54 @@
 					if(value!=''){
 						this.fee = parseFloat(value).toFixed(2)
 					}
+				}
+			},
+			time(){
+				let Time = '';
+				if(this.OnlyLi){
+					Time = $('.time-input-start')[0].value + '-' +  $('.time-input-end')[0].value;
+				}else{
+					Time = $('.time-input-start')[0].value + '-' +  $('.time-input-end')[0].value;
+					Time += ',' + $('.time-input-start')[1].value + '-' +  $('.time-input-end')[1].value
+				}
+				return Time
+			},
+			UpdateClick(){
+				const that = this;
+				let sql,way;
+				//获取配送方式的选择
+				let radio = document.getElementsByName('delivery');
+				if(radio[0].checked == true){
+					way = radio[0].value
+				}else{
+					way = radio[1].value
+				}
+				//获取标签的文本
+				let li_tags = document.getElementsByClassName('tags-input');
+				let tags = '';
+				for(let i = 0;i < li_tags.length;i++){
+					if(li_tags[i].value != ''){
+						tags += li_tags[i].value + ','
+					}
+				}
+				tags = tags.substr(0,tags.length-1);
+				//获取分类的文本
+				let li_category = document.getElementsByClassName('category-input');
+				let category = '';
+				for(let i = 0;i < li_category.length;i++){
+					if(li_category[i].value != ''){
+						category += li_category[i].value + ','
+					}
+				}
+				category = category.substr(0,category.length-1);
+				//sql语句的组合
+				sql = "UPDATE store_table SET position='" + that.position + "',delivery='" + way + "',serve_time='" + that.time() + "',announcement='" + that.announce + "',min_price='" + parseFloat(that.min_price) + "',fee='" + parseFloat(that.fee) + "',Store_tags='" + tags + "',Store_classify='" + that.classify + "' WHERE Store_name='" + that.name + "'";
+				// console.log(sql)
+				//update提交
+				let result = this.Update(sql);
+				if(result){
+					alert('信息修改成功');
+					this.$router.push('/manager/home')
 				}
 			}
 		},
