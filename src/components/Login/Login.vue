@@ -33,7 +33,7 @@
 				</div>
 			</div>
 			<div class="button">
-				<input type="button" class="login-btn" value="注册" />
+				<input type="button" class="login-btn" value="注册" @click="SignRequest()"/>
 				<span class="link link-to-login" @click="login=!login">已有账号，去登陆</span>
 			</div>
 		</div>
@@ -61,7 +61,7 @@
 						<input type="button" class="phone-code-send" :disabled="!PhoneCheck" v-model="TimeShow" @click="verification()" />
 					</div>
 					<div class="body-part">
-						<input type="button" class="form-btn" value="登录" @click="LoginRequest">
+						<input type="button" class="form-btn" value="登录" @click="LoginRequest()">
 					</div>
 					<div class="body-part form-link">
 						<span class="link link-to-register" @click="login=!login">注册账号，免费入驻</span>
@@ -179,6 +179,9 @@
 						$('#user').css('border','solid 1px #E9686B')
 					}
 				}
+			},
+			SignRequest(){
+				
 			}
 		},
 		async mounted(){

@@ -83,7 +83,7 @@
 		position: absolute;
 		width: 2%;
 		height: 6px;
-		top: 64.5%;
+		top: 65%;
 		left: 13.2%;
 		background-color: #000000;
 		transform: rotateZ(15deg);
@@ -93,7 +93,7 @@
 		position: absolute;
 		width: 2%;
 		height: 6px;
-		top: 69.5%;
+		top: 70%;
 		left: 15.5%;
 		background-color: #000000;
 	}

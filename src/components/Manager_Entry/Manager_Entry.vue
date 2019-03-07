@@ -18,7 +18,7 @@
 								<input type="button" class="category box-text" @click="dropdownShow=!dropdownShow" :value="category?category:FirstClassName">
 								<div class="box-descropt" style="top: 51%">您想要添加的商品的类别，可在已有的类别中选择。如果需要特别添加新类别请前往 <router-link tag="span" to="/manager/setting" class="link-to-setting">商铺设置</router-link> 中添加类别</div>
 								<ul class="dropdown-ul" :class="{'dropdown-show':dropdownShow}">
-									<li class="dropdown-li" v-for="item in DMInfo" :key="item.ID" @click="listClick(item.class_name)">{{item.class_name}}</li>
+									<li class="dropdown-li" v-for="item in Category" :key="item.ID" @click="listClick(item)">{{item}}</li>
 								</ul>
 							</div>
 						</div>
@@ -86,14 +86,15 @@
 			...mapState([
 				'DMInfo',
 				'EditState',
-				'LoginState'
+				'LoginState',
+				'StoreInfo'
 			]),
 			...mapGetters([
 				'EditInfo'
 			]),
 			FirstClassName(){
-				if(this.DMInfo[0]){
-					return this.DMInfo[0].class_name
+				if(this.Category[0]){
+					return this.Category[0]
 				}else{
 					return ''
 				}
@@ -118,6 +119,9 @@
 				}else{
 					return false;
 				}
+			},
+			Category(){
+				return this.StoreInfo.category.split(',')
 			}
 		},
 		methods: {
@@ -209,6 +213,8 @@
 					that.price = parseFloat(that.price).toFixed(2)
 				}
 			})
+			
+			console.log(that.Category)
 		},
 		watch:{
 			name(value){
